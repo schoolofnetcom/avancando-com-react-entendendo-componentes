@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import TodoForm from './../components/TodoForm';
 import { TodoList } from './../components/TodoList';
 import { ContainerApp } from './../components/ContainerApp';
+import { Message, WelcomeMessage } from './../components/Message';
+import { getTodos } from './../API';
 
 export default class TodoListApp extends Component {
     constructor(props) {
@@ -9,6 +11,16 @@ export default class TodoListApp extends Component {
         this.state = {
             items: []
         }
+    }
+
+    async componentDidMount() {
+        const { data } = await getTodos();
+        this.setState({ items: data });
+        // fetch('https://jsonplaceholder.typicode.com/todos')
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         this.setState({ items: data });
+        //     });
     }
    
     pushToItems = (todo) => {
@@ -29,7 +41,7 @@ export default class TodoListApp extends Component {
         return (
             <ContainerApp>
                 <div className="col-xs-12 col-md-12">
-                    <h2>Todolist</h2>
+                    <WelcomeMessage />
                 </div>
                 <div className="col-xs-12 col-md-12">
                     <TodoForm pushToItems={this.pushToItems} />
